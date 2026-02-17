@@ -1,6 +1,6 @@
 # Marvin Status Dashboard
 
-Live dashboard for Marvin's agent status, activity log, system health, and personality/memory files.
+Lightweight pulse dashboard for Marvin's agent status and system health.
 
 ## Architecture
 
@@ -23,18 +23,22 @@ Browser ----------------GET /---------------> HTML dashboard
 
 ## POST Payload
 
-Marvin sends a JSON object with these optional sections:
+`push-status.sh` collects system data automatically. Marvin pipes in a small JSON on stdin:
 
-- `agent` — name, status, emoji, briefing, currentTask, mood, todayStats
-- `actions` — array of `{ time, type, summary, detail }` entries
-- `files` — `{ personality: {}, memory: {}, config: {} }` with full file contents
-- `recentFiles` — array of `{ path, op, time }` entries
+```json
+{"status":"online","briefing":"All clear. 11 CTs, 5 docker, 3 coolify apps healthy.","currentTask":"Deploying certusrx update"}
+```
+
+The script wraps this with system health data. Final payload sections:
+
+- `agent` — name, status, briefing, currentTask, lastHeartbeat
 - `proxmox` — containers list + host resource usage
 - `docker` — container list with status
 - `coolify` — app list with status/fqdn
-- `monitors` — uptime monitor status
-- `git` — recent activity across repos
+- `local` — CT 110 load, disk, memory, uptime
 - `timestamp` — ISO timestamp of the push
+
+Detailed activity logging goes to the Obsidian vault daily file (`memory/YYYY-MM-DD.md`), not the dashboard.
 
 ## Environment Variables
 
