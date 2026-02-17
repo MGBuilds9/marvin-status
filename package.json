@@ -1,6 +1,7 @@
 {
   "name": "marvin-status",
-  "version": "1.0.0",
+  "version": "2.0.0",
+  "description": "Marvin agent status dashboard — receives push updates and renders a live dashboard",
   "main": "index.js",
   "dependencies": {
     "express": "^4.18.2"
